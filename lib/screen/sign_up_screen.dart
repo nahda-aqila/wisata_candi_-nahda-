@@ -1,110 +1,121 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class SignInScreen extends StatefulWidget {
-  SignInScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  SignUpScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
-
-class _SignInScreenState extends State<SignInScreen> {
-//Todo 1 Deklarasikan Variabel
+class _SignUpScreenState extends State<SignUpScreen> {
+  // TODO : 1. Deklarasi Variabel
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _fullnameController = TextEditingController();
 
-  final TextEditingController _passwordControler = TextEditingController();
+  String _errorText = '';
 
-  String _errortext = '';
+  bool _obscurePassword = true;
 
-  bool _isSignedIn = false;
+  // TODO: 1. Membuat method sign up
+  void _signUp() async {
+    String name = _fullnameController.text.trim();
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text.trim();
+    
+    if(password.length < 8 || 
+    !password.contains(RegExp(r'[A-Z]')) ||
+    !password.contains(RegExp(r'[a-z]')) ||
+    !password.contains(RegExp(r'[0-9]')) ||
+    !password.contains(RegExp(r'[!@#$%^&*():{}<>]'))) {
+      setState(() {
+        _errorText = 'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*():{}<>]';
+      });
+      return;
+    };
 
-  bool _obsecurePassword = true;
+    print('*** Sign up berhasil!');
+    print('Fullname: $name!');
+    print('Username: $username!');
+    print('Password: $password!');
+
+  }
+
+  // TODO: 2. Membuat method dispose
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _fullnameController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //TODO : 2 pasang appBar
-        appBar: AppBar(title: Text('Sign in'),),
-        // TODO : 3 pasang body
-        body: Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Form(
-                    child: Column(
-                      // TODO: 4. Atur mainAxisAligment dan crossAxisAligment
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TextFormField(
-                          controller: _usernameController,
-                          decoration: InputDecoration(
-                            labelText: "Jonathan Christian",
-                            border: OutlineInputBorder()
-                          ),
-                        ),
-                        // TODO: 5. Pasang TextFormField Nama Pengguna
-                        TextFormField(
-                          controller: _usernameController,
-                          decoration: InputDecoration(
-                              labelText: "Nama Pengguna",
-                              border: OutlineInputBorder()
-                          ),
-                        ),
-                        // TODO: 6. Pasang TextFormField Kata Sandi
-                        SizedBox(height: 20),
-                        TextFormField(
-                          controller: _passwordControler,
-                          decoration: InputDecoration(
-                            labelText: "Kata Sandi",
-                            errorText: _errortext.isNotEmpty ? _errortext : null,
-                            border: OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              onPressed: (){
-                                setState(() {
-                                  _obsecurePassword = !_obsecurePassword;
-                                });
-                              },
-                              icon: Icon(
-                                _obsecurePassword ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
-                            ),
-                          ),
-                          obscureText: _obsecurePassword,
-                        ),
-                        // TODO: 7. Pasang ElevatedButton Sign In
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                            onPressed: (){},
-                            child: Text('Sign In')),
-                        // TODO: 8 Pasang TextButton Sign UP
-                        SizedBox(height: 10),
-                        //
-                        RichText(
-                            text: TextSpan(
-                                text: 'Belum punya akun? ',
-                                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'Daftar di sini.',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline,
-                                        fontSize: 16
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {},
-                                  )
-                                ]
-                            )
-                        )
-                      ],
+    return  Scaffold(
+      // TODO : 2. Pasang Appbar
+      appBar: AppBar(title: Text('Sign Up'),),
+      // TODO : 3. Pasang body
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              // TODO : 4. Atur mainAxisAligment dan CrossAxisAligment
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _fullnameController,
+                  decoration: InputDecoration(
+                    labelText: "Nama Lengkap",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                // TODO : 5. Pasang TextFormField Nama Pengguna
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: "Nama Pengguna",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                // TODO : 6. Pasang TextFormField Kata Sandi
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: "Kata Sandi",
+                    errorText: _errorText.isNotEmpty ? _errorText : null,
+                    border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        setState((){
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                      icon: Icon(
+                        _obscurePassword ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
                     ),
-                  )
-              ),
-            )
-        )
+                  ),
+                  obscureText: _obscurePassword,
+                ),
+                // TODO : 7. Pasang ElevatedButton Sign In
+                SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: _signUp,
+                    child: Text('Sign Up')),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
