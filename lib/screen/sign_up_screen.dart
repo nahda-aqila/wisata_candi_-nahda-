@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
@@ -19,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // TODO: 1. Membuat method sign up
   void _signUp() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     String name = _fullnameController.text.trim();
     String username = _usernameController.text.trim();
     String password = _passwordController.text.trim();
@@ -34,11 +36,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     };
 
-    print('*** Sign up berhasil!');
-    print('Fullname: $name!');
-    print('Username: $username!');
-    print('Password: $password!');
+    try {
 
+    prefs.setString('fullname', name);
+    prefs.setString('username', username);
+    prefs.setString('password', password);
+    // print('*** Sign up berhasil!');
+    // print('Fullname: $name!');
+    // print('Username: $username!');
+    // print('Password: $password!');
+  } catch (e) {
+      print('Terjadi kesalahab: $e');
+    }
+    Navigator.pushReplacementNamed(context, '/sign_in');
   }
 
   // TODO: 2. Membuat method dispose

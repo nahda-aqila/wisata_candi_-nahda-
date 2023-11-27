@@ -39,11 +39,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: DetailScreen(),
-      //home: SignInScreen(),
-      home: SignUpScreen(),
+      // home: SignInScreen(),
+      // home: SignUpScreen(),
       //home: SearchScreen(),
       // home: HomeScreen(),
-      // home: MainScreen(),
+      home: MainScreen(),
     );
   }
 
